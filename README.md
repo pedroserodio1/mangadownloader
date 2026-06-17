@@ -1,8 +1,18 @@
 # manga-downloader
 
-CLI em Node.js para baixar capítulos em PDF de light novels, com arquitetura de plugins e configuração interativa.
+CLI em Node.js para baixar capítulos em PDF de light novels, com arquitetura de plugins e configuração interativa. O mesmo projeto também expõe um servidor [MCP](https://modelcontextprotocol.io) para uso por agentes de IA (Cursor, Claude Desktop, etc.).
 
-A primeira fonte disponível é o [Central Novel](https://centralnovel.com); novos sites podem ser adicionados como plugins em `plugins/`.
+Fontes disponíveis: [Central Novel](https://centralnovel.com), [MangaDex](https://mangadex.org) e outras via plugins em `plugins/`.
+
+## Início rápido
+
+```bash
+pnpm install
+pnpm init          # wizard interativo → gera config.json
+pnpm start         # baixa os volumes configurados
+```
+
+Para agentes de IA, configure o MCP (seção abaixo) e use as tools `config_create`, `download`, `review`, etc.
 
 ## Requisitos
 
@@ -95,6 +105,66 @@ No **download** interativo, o CLI pergunta o formato de saída antes de baixar (
 
 Quando um volume é baixado com sucesso, ele é removido automaticamente de `pluginConfig.volumes`.
 
+## Uso via MCP
+
+O servidor MCP oferece paridade com o CLI — downloads, review, rename, convert e gestão de config — sem prompts interativos. Ideal para Cursor, Claude Desktop e outros clientes compatíveis.
+
+### Iniciar o servidor
+
+```bash
+pnpm mcp          # stdio (Cursor / Claude Desktop)
+pnpm mcp:http     # HTTP em http://127.0.0.1:3847/mcp
+```
+
+### Configuração no Cursor
+
+Adicione em `.cursor/mcp.json` (use o caminho absoluto do seu clone):
+
+```json
+{
+  "mcpServers": {
+    "manga-downloader": {
+      "command": "node",
+      "args": ["D:\\caminho\\para\\baixar-centralnovel\\bin\\mcp-server.js"]
+    }
+  }
+}
+```
+
+### Variáveis de ambiente
+
+| Variável | Descrição |
+|----------|-----------|
+| `MANGA_DOWNLOADER_CONFIG` | Caminho alternativo para `config.json` (padrão: raiz do projeto) |
+| `MCP_HTTP_HOST` | Host do servidor HTTP (padrão: `127.0.0.1`) |
+| `MCP_HTTP_PORT` | Porta HTTP (padrão: `3847`) |
+
+### Tools
+
+| Tool | Equivalente CLI | Descrição |
+|------|-----------------|-----------|
+| `plugins_list` | — | Lista plugins de fonte disponíveis |
+| `config_get` | — | Lê `config.json` validado |
+| `config_create` | `init` | Cria config sem wizard |
+| `config_update` | `config` | Atualiza campos do config |
+| `catalog_get` | wizard init/config | Carrega catálogo de volumes do plugin |
+| `manga_search` | busca no init | Pesquisa mangá (ex.: MangaDex) |
+| `download` | `download` | Baixa volumes configurados |
+| `review` | `review` | Compara catálogo do site × arquivos locais |
+| `rename` | `rename` | Renomeia PDFs para padrão Kindle |
+| `convert` | `convert` | Converte arquivos locais para outro formato |
+
+Opções comuns (`volume`, `dryRun`, `quiet`, `verbose`) aplicam-se a `download`, `review`, `rename` e `convert`. No MCP, `quiet` é `true` por padrão para manter o stdout limpo no transporte stdio.
+
+### Recursos (resources)
+
+| URI | Descrição |
+|-----|-----------|
+| `config://current` | Snapshot JSON do config validado |
+| `plugin://{pluginId}` | Metadados do plugin, `setupFields` e `outputFormats` |
+
+Documentação completa (schemas, Claude Desktop, HTTP remoto): [docs/MCP.md](docs/MCP.md).
+
 ## Uso
 
 ```bash
@@ -162,13 +232,15 @@ pnpm test
 ```text
 manga-downloader/
 ├── bin/manga-downloader.js   # Entry point CLI
+├── bin/mcp-server.js         # Servidor MCP (stdio / HTTP)
 ├── config.json               # Config local (não versionado)
 ├── plugins/
 │   ├── types.js              # Contrato dos plugins
 │   └── centralnovel/         # Plugin Central Novel
 ├── lib/
 │   ├── cli/                  # Parser de argumentos
-│   ├── config/               # store, init, edit
+│   ├── config/               # store, init, edit, programmatic
+│   ├── mcp/                  # servidor MCP (handlers, execute)
 │   ├── core/                 # naming, paths, catalog
 │   ├── plugins/              # loader de plugins
 │   ├── download/             # downloader

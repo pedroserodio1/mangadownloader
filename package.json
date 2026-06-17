@@ -5,7 +5,8 @@
   "main": "index.js",
   "type": "module",
   "bin": {
-    "manga-downloader": "./bin/manga-downloader.js"
+    "manga-downloader": "./bin/manga-downloader.js",
+    "manga-downloader-mcp": "./bin/mcp-server.js"
   },
   "scripts": {
     "start": "node bin/manga-downloader.js",
@@ -14,6 +15,8 @@
     "review": "node bin/manga-downloader.js review",
     "rename": "node bin/manga-downloader.js rename",
     "convert": "node bin/manga-downloader.js convert",
+    "mcp": "node bin/mcp-server.js",
+    "mcp:http": "node bin/mcp-server.js --http",
     "test": "node --test tests/"
   },
   "keywords": [],
@@ -22,11 +25,13 @@
   "packageManager": "pnpm@10.12.1",
   "dependencies": {
     "@clack/prompts": "^1.5.1",
+    "@modelcontextprotocol/sdk": "^1.29.0",
     "archiver": "^8.0.0",
     "cheerio": "^1.1.2",
     "log-update": "^8.0.0",
     "ora": "^9.4.0",
     "pdf-lib": "^1.17.1",
-    "picocolors": "^1.1.1"
+    "picocolors": "^1.1.1",
+    "zod": "^4.4.3"
   }
 }
