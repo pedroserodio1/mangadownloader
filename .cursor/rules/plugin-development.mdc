@@ -1,0 +1,38 @@
+---
+description: SourcePlugin contract and plugin authoring conventions
+globs: plugins/**/*
+alwaysApply: false
+---
+
+# Plugin development
+
+Contract: [plugins/types.js](plugins/types.js). HTML reference: [plugins/centralnovel/](plugins/centralnovel/).
+
+Plugins are **source adapters** — HTML scraper, REST API, or hybrid. Not every plugin uses cheerio or PDF.
+
+## Required
+
+- `id` === folder name
+- `name`, `setupFields`, `parseSeriesPage`, `resolvePdfUrl`
+- Export: `export default plugin`
+
+## Semantics (historical names)
+
+- `parseSeriesPage(body)` — parse catalog from HTML **or** JSON string
+- `resolvePdfUrl(chapterRef, ctx)` — resolve direct **asset** URL (PDF, image, …)
+- `Chapter.pdfPageUrl` — opaque chapter reference, not necessarily a PDF URL
+
+## Module layout
+
+- `scraper.js` — HTML → catalog
+- `catalog.js` — API/JSON → catalog
+- `resolver.js` — chapterRef → asset URL
+
+## Pitfalls
+
+- Catalog keys must match `pluginConfig.volumes`
+- Image plugins: core writes `.pdf` paths today — set `chapterContentType: 'image'` and plan core work
+- Multi-image chapters need core extension (not one URL per chapter)
+- Use `ctx.http` — not raw fetch
+
+Full guide: [docs/PLUGIN_AUTHORING.md](docs/PLUGIN_AUTHORING.md)

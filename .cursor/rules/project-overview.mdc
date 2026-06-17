@@ -1,0 +1,27 @@
+---
+description: manga-downloader project overview — stack, layout, and safety rules
+alwaysApply: true
+---
+
+# manga-downloader overview
+
+Node.js 18+ CLI (ESM, no build). Package manager: **pnpm**.
+
+## Layout
+
+- `bin/manga-downloader.js` — CLI entry
+- `plugins/<id>/index.js` — source plugins (auto-discovered)
+- `plugins/centralnovel/` — reference implementation
+- `lib/` — core (config, download, output, commands)
+- `tests/` — `node --test` + fixtures
+
+Read [AGENTS.md](AGENTS.md) and [docs/](docs/) for full context.
+
+## Rules
+
+- Run `pnpm test` after code changes
+- Never commit `config.json`
+- `plugin.id` must match folder name under `plugins/`
+- Site-specific logic stays in `plugins/` — not in `lib/`
+- CLI user messages in Portuguese; dev docs in English
+- Minimal diffs — follow existing conventions

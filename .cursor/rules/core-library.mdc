@@ -1,0 +1,37 @@
+---
+description: Core library layer boundaries and conventions
+globs: lib/**/*
+alwaysApply: false
+---
+
+# Core library
+
+Architecture: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Layers
+
+`commands/` → `shared/runtime.js` → `config/store.js` + `plugins/loader.js` → plugin methods.
+
+Commands must not import plugin internals (scraper/resolver) — only `loadPlugin(id)`.
+
+## Do
+
+- Reuse `lib/shared/http.js` and `AppError` from `lib/shared/errors.js`
+- Keep source-agnostic logic here; HTML parsing belongs in plugins
+- Hook new output formats via `lib/output/registry.js`
+- New commands go in `lib/commands/` and wire in `bin/manga-downloader.js`
+
+## Don't
+
+- Hardcode site selectors or URLs in core
+- Bypass `validateConfig` / `resolveRuntime` for config loading
+- Duplicate naming logic — use `lib/core/naming.js`
+
+## Key modules
+
+| Module | Role |
+|--------|------|
+| `shared/runtime.js` | Config + plugin resolution, catalog load |
+| `download/downloader.js` | Chapter download orchestration |
+| `output/finalize.js` | PDF merge after download |
+| `config/store.js` | Config normalize/validate/save |

@@ -1,0 +1,27 @@
+---
+description: Test conventions for manga-downloader
+globs: tests/**/*
+alwaysApply: false
+---
+
+# Testing
+
+Run: `pnpm test` (`node --test tests/`).
+
+## Conventions
+
+- Use `node:test` and `node:assert/strict`
+- HTML fixtures in `tests/fixtures/` — never fetch live sites in unit tests
+- Plugin loader tests: call `clearPluginCache()` in `beforeEach`
+- Test scrapers in isolation; test plugin contract (id, required methods)
+- Follow patterns in `tests/plugins/centralnovel.test.js` and `tests/plugins/loader.test.js`
+
+## Plugin tests checklist
+
+1. `parseSeriesPage` with fixture HTML → expected volume keys and cap IDs
+2. Helper functions (URL extraction, etc.) with edge cases
+3. Plugin exports valid `SourcePlugin` shape
+
+## After adding a plugin
+
+Ensure `discoverPlugins()` finds it (folder name === id, has `index.js`).
