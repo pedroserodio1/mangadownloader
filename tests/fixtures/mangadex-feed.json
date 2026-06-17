@@ -1,0 +1,81 @@
+{
+  "result": "ok",
+  "data": [
+    {
+      "id": "aaa11111-1111-4111-8111-111111111101",
+      "type": "chapter",
+      "attributes": {
+        "volume": "1",
+        "chapter": "1",
+        "title": "Cap um",
+        "translatedLanguage": "en",
+        "externalUrl": null,
+        "isUnavailable": false,
+        "pages": 10,
+        "readableAt": "2020-01-02T00:00:00+00:00",
+        "createdAt": "2020-01-01T00:00:00+00:00"
+      }
+    },
+    {
+      "id": "aaa11111-1111-4111-8111-111111111102",
+      "type": "chapter",
+      "attributes": {
+        "volume": "1",
+        "chapter": "2",
+        "title": "",
+        "translatedLanguage": "en",
+        "externalUrl": null,
+        "isUnavailable": false,
+        "pages": 8,
+        "readableAt": "2020-01-03T00:00:00+00:00",
+        "createdAt": "2020-01-03T00:00:00+00:00"
+      }
+    },
+    {
+      "id": "bbb22222-2222-4222-8222-222222222201",
+      "type": "chapter",
+      "attributes": {
+        "volume": "2",
+        "chapter": "1",
+        "title": "",
+        "translatedLanguage": "en",
+        "externalUrl": null,
+        "isUnavailable": false,
+        "pages": 12,
+        "readableAt": "2020-02-01T00:00:00+00:00",
+        "createdAt": "2020-02-01T00:00:00+00:00"
+      }
+    },
+    {
+      "id": "ccc33333-3333-4333-8333-333333333301",
+      "type": "chapter",
+      "attributes": {
+        "volume": "1",
+        "chapter": "1",
+        "title": "duplicado",
+        "translatedLanguage": "en",
+        "externalUrl": null,
+        "isUnavailable": false,
+        "pages": 5,
+        "readableAt": "2019-01-01T00:00:00+00:00",
+        "createdAt": "2019-01-01T00:00:00+00:00"
+      }
+    },
+    {
+      "id": "ddd44444-4444-4444-8444-444444444401",
+      "type": "chapter",
+      "attributes": {
+        "volume": "",
+        "chapter": "0",
+        "title": "extra",
+        "translatedLanguage": "en",
+        "externalUrl": null,
+        "isUnavailable": false,
+        "pages": 3,
+        "readableAt": "2020-03-01T00:00:00+00:00",
+        "createdAt": "2020-03-01T00:00:00+00:00"
+      }
+    }
+  ],
+  "total": 5
+}

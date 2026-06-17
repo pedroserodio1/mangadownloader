@@ -1,0 +1,19 @@
+{
+  "result": "ok",
+  "data": [
+    {
+      "id": "f98660a1-d2e2-461c-960d-7bd13df8b76d",
+      "type": "manga",
+      "attributes": {
+        "title": { "en": "Test Manga", "pt-br": "Manga Teste" },
+        "year": 2020,
+        "status": "ongoing",
+        "contentRating": "safe",
+        "publicationDemographic": "shounen"
+      }
+    }
+  ],
+  "limit": 15,
+  "offset": 0,
+  "total": 1
+}

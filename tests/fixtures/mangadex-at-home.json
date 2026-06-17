@@ -1,0 +1,15 @@
+{
+  "result": "ok",
+  "baseUrl": "https://cmdxd98sb0x3yprd.mangadex.network",
+  "chapter": {
+    "hash": "8c0c987498cbaf1b4b8c188666cd50b5",
+    "data": [
+      "1-page.jpg",
+      "2-page.jpg"
+    ],
+    "dataSaver": [
+      "1-page-saver.jpg",
+      "2-page-saver.jpg"
+    ]
+  }
+}
