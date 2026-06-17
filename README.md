@@ -6,11 +6,22 @@ Fontes disponíveis: [Central Novel](https://centralnovel.com), [MangaDex](https
 
 ## Início rápido
 
+**Com clone:**
+
 ```bash
 pnpm install
 pnpm init          # wizard interativo → gera config.json
 pnpm start         # baixa os volumes configurados
 ```
+
+**Sem clonar:**
+
+```bash
+npx github:pedroserodio1/mangadownloader init
+npx github:pedroserodio1/mangadownloader
+```
+
+Para simular antes de salvar arquivos: `--dry-run` (ver seção [Simular sem salvar](#simular-sem-salvar)).
 
 Para agentes de IA, configure o MCP (seção abaixo) e use as tools `config_create`, `download`, `review`, etc.
 
@@ -21,11 +32,47 @@ Para agentes de IA, configure o MCP (seção abaixo) e use as tools `config_crea
 
 ## Instalação
 
+### Com clone (desenvolvimento)
+
 ```bash
-git clone <url-do-repositorio>
-cd baixar-centralnovel
+git clone https://github.com/pedroserodio1/mangadownloader.git
+cd mangadownloader
 pnpm install
 ```
+
+### Sem clonar (`npx` / `pnpm dlx`)
+
+Rode direto do GitHub — o Node baixa o pacote temporariamente (ou em cache) e executa o CLI:
+
+```bash
+npx github:pedroserodio1/mangadownloader --help
+npx github:pedroserodio1/mangadownloader init
+npx github:pedroserodio1/mangadownloader
+npx github:pedroserodio1/mangadownloader review
+```
+
+Com pnpm:
+
+```bash
+pnpm dlx github:pedroserodio1/mangadownloader init
+pnpm dlx github:pedroserodio1/mangadownloader
+```
+
+Instalação global (opcional):
+
+```bash
+npm install -g github:pedroserodio1/mangadownloader
+manga-downloader init
+```
+
+O `config.json` é criado no **diretório atual** de onde você roda o comando. Para usar outro caminho:
+
+```bash
+set MANGA_DOWNLOADER_CONFIG=D:\Biblioteca\Novels\config.json
+npx github:pedroserodio1/mangadownloader
+```
+
+No Linux/macOS, use `export` em vez de `set`.
 
 ## Configuração interativa
 
@@ -118,14 +165,27 @@ pnpm mcp:http     # HTTP em http://127.0.0.1:3847/mcp
 
 ### Configuração no Cursor
 
-Adicione em `.cursor/mcp.json` (use o caminho absoluto do seu clone):
+**Sem clonar** — o Cursor baixa e executa via `npx`:
+
+```json
+{
+  "mcpServers": {
+    "manga-downloader": {
+      "command": "npx",
+      "args": ["-y", "-p", "github:pedroserodio1/mangadownloader", "manga-downloader-mcp"]
+    }
+  }
+}
+```
+
+**Com clone local** — use o caminho absoluto do seu repositório:
 
 ```json
 {
   "mcpServers": {
     "manga-downloader": {
       "command": "node",
-      "args": ["D:\\caminho\\para\\baixar-centralnovel\\bin\\mcp-server.js"]
+      "args": ["D:\\caminho\\para\\mangadownloader\\bin\\mcp-server.js"]
     }
   }
 }
@@ -213,6 +273,35 @@ node bin/manga-downloader.js --help
 | `--quiet`, `-q` | Apenas erros e resumo |
 | `--verbose` | Logs detalhados |
 | `--help`, `-h` | Ajuda |
+
+### Simular sem salvar
+
+Use estas opções para inspecionar ou simular antes de gravar PDFs na pasta base.
+
+**Simulação (`--dry-run`)** — mostra o que seria feito, sem salvar nem renomear:
+
+```bash
+node bin/manga-downloader.js --dry-run
+node bin/manga-downloader.js --dry-run --volume 3 --verbose
+node bin/manga-downloader.js rename --dry-run
+node bin/manga-downloader.js convert --format volume-single --dry-run
+```
+
+No MCP, passe `"dryRun": true` nas tools `download`, `rename` ou `convert`.
+
+**Comandos que não baixam capítulos** — consultam o site ou só alteram config/arquivos locais:
+
+| CLI | MCP | O que faz |
+|-----|-----|-----------|
+| `review` | `review` | Compara catálogo online × PDFs locais |
+| `init` | `config_create` | Cria `config.json` (o wizard consulta o catálogo, mas não baixa caps) |
+| `config` | `config_update` | Edita config existente |
+| — | `catalog_get` | Lista volumes/capítulos do plugin sem download |
+| — | `manga_search` | Busca mangás (ex.: MangaDex) |
+| — | `plugins_list` | Lista fontes disponíveis |
+| `convert` | `convert` | Só usa PDFs já existentes no disco (sem consultar o site) |
+
+O `review` não aceita `--dry-run` porque já é somente leitura.
 
 ## Adicionar um plugin
 
