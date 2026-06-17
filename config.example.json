@@ -1,0 +1,14 @@
+{
+  "source": "centralnovel",
+  "pastaBase": "C:\\caminho\\para\\sua\\biblioteca\\novel",
+  "pluginConfig": {
+    "serieUrl": "https://centralnovel.com/series/nome-da-serie/",
+    "volumes": ["1", "2", "3"],
+    "outputFormat": "chapters"
+  },
+  "seriesName": "Nome da Série",
+  "concurrency": 3,
+  "retryDelayMs": 5000,
+  "requestTimeoutMs": 30000,
+  "maxRetries": null
+}

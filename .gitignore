@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+
+# Config local (copie config.example.json → config.json)
+config.json
+
+# Logs e cache
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.npm
+.pnpm-store
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Variáveis de ambiente
+.env
+.env.*
+
+# Downloads locais (caso pastaBase aponte para dentro do projeto)
+downloads/
+*.pdf
